@@ -5,6 +5,7 @@ from tags.serializer import WriteTagSerializer, ReadTagSerializer
 from tags.models import Tags 
 from django.utils.text import slugify 
 from rest_framework.generics import RetrieveAPIView, DestroyAPIView 
+from rest_framework.views import APIView 
 # Create your views here.
 
 class CraeteTagAPiView(views.APIView):
@@ -41,4 +42,18 @@ class TagDetailViewV1(views.APIView):
 class TagDetailViewV2(RetrieveAPIView):
     queryset = Tags.objects.all()
     serializer_class = ReadTagSerializer
+    lookup_field = "slug"
+
+class DeleteTagView1(APIView):
+    
+    def delete(self, request, slug):
+        try:
+            tag_object = Tags.objects.get(slug=slug)
+            tag_object.delete()
+            return Response({"message: Tag Deleted !"}, status=status.HTTP_200_OK)
+        except (Tags.DoesNotExist, Tags.MultipleObjectsReturned):
+            return Response({"message: Tag not found!"}, status=status.HTTP_400_BAD_REQUEST) 
+    
+class DeleteTagView2(DestroyAPIView):
+    queryset = Tags.objects.all()
     lookup_field = "slug"

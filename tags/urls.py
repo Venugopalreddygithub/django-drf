@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from tags.views import CraeteTagAPiView, TagDetailViewV1, TagDetailViewV2, DeleteTagView1, DeleteTagView2 
+from tags.views import CraeteTagAPiView, TagDetailViewV1, TagDetailViewV2, DeleteTagView1, DeleteTagView2, ListTagView1, ListTagView2 
 
 urlpatterns = [
     path('create/', CraeteTagAPiView.as_view(), name='create-tag'),
@@ -8,4 +8,6 @@ urlpatterns = [
     path('tag-detail/v2/<str:slug>', TagDetailViewV2.as_view(), name='tag-detail-v2'),
     path('tag-delete/v1/<str:slug>', DeleteTagView1.as_view(), name='tag-delete-v1'),
     path('tag-delete/v2/<str:slug>', DeleteTagView2.as_view(), name='tag-delete-v2'),
+    path('tag-list/v1', ListTagView1.as_view(), name='tag-list-v1'),
+    path('tag-list/v2', ListTagView2.as_view(), name='tag-list-v2'),
 ]

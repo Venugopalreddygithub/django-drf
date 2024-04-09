@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView 
 from rest_framework import status 
 from rest_framework.response import Response 
-from products.serializer import WriteProductSerializer 
+from products.serializer import WriteProductSerializer, ReadProductSerializer 
 from products.models import Product 
 from django.utils.text import slugify 
 
@@ -16,7 +16,8 @@ class CreateProductView(APIView):
         request_data.update({"slug": slugify(request_data.get('name'))})
         serializer = WriteProductSerializer(data=request_data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_200_OK)
+            product_instance = serializer.save()
+            response_data = ReadProductSerializer(instance=product_instance).data 
+            return Response(response_data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
